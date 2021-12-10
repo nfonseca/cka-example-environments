@@ -10,7 +10,7 @@ You will start a 4 node cluster on your machine, one master and 3 worker nodes. 
 
 
 ```
-git clone git@github.com:wuestkamp/cka-example-environments.git
+git clone https://github.com/nfonseca/cka-example-environments.git
 cd cka-example-environments/cluster1
 ./up.sh
 
