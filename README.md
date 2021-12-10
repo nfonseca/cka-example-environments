@@ -6,7 +6,7 @@ https://levelup.gitconnected.com/kubernetes-cka-example-questions-practical-chal
 
 
 ## setup and run
-You will start a two node cluster on your machine, one master and one worker. For this you need to install VirtualBox and vagrant, then:
+You will start a 4 node cluster on your machine, one master and 3 worker nodes. For this you need to install VirtualBox and vagrant, then:
 
 
 ```
@@ -23,5 +23,6 @@ You should be connected as `root@cluster1-master1`. You can connect to other wor
 If you want to destroy the environment again run `./down.sh`. You should destroy the environment after usage so no more resources are used!
 
 
-# more
-More challenges in a completely simulated CKA environment on https:/killer.sh
+# Disclaimer
+
+This fork was modified in order to have a setup with 4 VM's instead of the original 2 VM config
