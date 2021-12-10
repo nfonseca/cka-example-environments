@@ -1,5 +1,7 @@
 IP_MASTER1 = "192.168.101.101"
 IP_WORKER1 = "192.168.101.201"
+IP_WORKER2 = "192.168.101.202"
+IP_WORKER3 = "192.168.101.203"
 
 POD_NW_CIDR = "10.244.0.0/16"
 
@@ -59,4 +61,61 @@ Vagrant.configure("2") do |config|
         node.vm.provision "install-kube", type: "shell", :path => "scripts/install-kube.sh"
         node.vm.provision "install-worker", type: "shell", :path => "scripts/install-worker.sh", env: {"MASTER_IP" => "#{IP_MASTER1}"}
     end
+
+# worker node 2
+	
+    config.vm.define "cluster1-worker2" do |node|
+
+        node.vm.provider "virtualbox" do |vb|
+            vb.name = "cluster1-worker2"
+            vb.memory = 2048
+            vb.cpus = 1
+
+            vb.customize [
+                "modifyvm", :id, "--uartmode1", "file",
+                File.join(Dir.pwd, "tmp/cluster1-worker2.log")
+            ]
+        end
+
+        node.vm.hostname = "cluster1-worker2"
+        node.vm.network :private_network, ip: IP_WORKER2
+
+        node.vm.provision "set-hosts", :type => "shell", :path => "scripts/set-hosts.sh" do |s|
+          s.args = ["enp0s8"]
+        end
+
+        node.vm.provision 'shell', inline: "cat /vagrant/certs/id_rsa.pub >> /root/.ssh/authorized_keys"
+        node.vm.provision "update-dns", type: "shell", :path => "scripts/update-dns.sh"
+        node.vm.provision "install-kube", type: "shell", :path => "scripts/install-kube.sh"
+        node.vm.provision "install-worker", type: "shell", :path => "scripts/install-worker.sh", env: {"MASTER_IP" => "#{IP_MASTER1}"}
+    end	
+
+# worker node 3
+
+    config.vm.define "cluster1-worker3" do |node|
+
+        node.vm.provider "virtualbox" do |vb|
+            vb.name = "cluster1-worker3"
+            vb.memory = 2048
+            vb.cpus = 1
+
+            vb.customize [
+                "modifyvm", :id, "--uartmode1", "file",
+                File.join(Dir.pwd, "tmp/cluster1-worker3.log")
+            ]
+        end
+
+        node.vm.hostname = "cluster1-worker3"
+        node.vm.network :private_network, ip: IP_WORKER3
+
+        node.vm.provision "set-hosts", :type => "shell", :path => "scripts/set-hosts.sh" do |s|
+          s.args = ["enp0s8"]
+        end
+
+        node.vm.provision 'shell', inline: "cat /vagrant/certs/id_rsa.pub >> /root/.ssh/authorized_keys"
+        node.vm.provision "update-dns", type: "shell", :path => "scripts/update-dns.sh"
+        node.vm.provision "install-kube", type: "shell", :path => "scripts/install-kube.sh"
+        node.vm.provision "install-worker", type: "shell", :path => "scripts/install-worker.sh", env: {"MASTER_IP" => "#{IP_MASTER1}"}
+    end		
+	
 end
